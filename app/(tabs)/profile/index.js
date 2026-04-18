@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { logout } from '../../../store/slices/authSlice';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { removePushToken } from '../../../store/slices/profileSlice';
 
 export default function ProfileIndex() {
     const insets = useSafeAreaInsets();
@@ -15,30 +16,13 @@ export default function ProfileIndex() {
     const [logoutVisible, setLogoutVisible] = useState(false);
 
 
-    // const handleLogout = async () => {
-    //     setIsLoggingOut(true);
 
-    //     try {
-    //         await dispatch(logout()).unwrap();
-
-    //         setIsLoggingOut(false);
-    //         setLogoutVisible(false);
-    //         router.replace("/login");
-    //     } catch (error) {
-    //         setIsLoggingOut(false);
-    //         Alert.alert(
-    //             "Logout Failed",
-    //             "We couldn't reach the server. Please check your connection and try again."
-    //         );
-    //         console.error("Logout error:", error);
-    //     }
-    // };
 
     const handleLogout = async () => {
     setIsLoggingOut(true);
 
     try {
- 
+   await removePushToken();        
       await dispatch(logout()).unwrap();
       
       setLogoutVisible(false);

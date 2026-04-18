@@ -5,6 +5,9 @@ import * as SplashScreen from "expo-splash-screen";
 import store from "../store";
 import { loadAuthData } from "../store/slices/authSlice";
 import AnimatedSplashScreen from "../components/AnimatedSplashScreen";
+import { usePushToken } from "../services/usePushToken";
+import * as Notifications from 'expo-notifications';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -13,7 +16,17 @@ function AuthGate() {
  const router = useRouter();
   const segments = useSegments();
   const dispatch = useDispatch();
+  Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+
+    const { removeToken } = usePushToken({ enabled: isAuthenticated });
+
 
   useEffect(() => {
     dispatch(loadAuthData());

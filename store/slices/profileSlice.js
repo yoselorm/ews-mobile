@@ -44,12 +44,11 @@ export const uploadAvatar = createAsyncThunk(
   }
 );
 
-// 4. Push Notifications (Register Token)
 export const registerPushToken = createAsyncThunk(
   'profile/registerPushToken',
-  async (token, { rejectWithValue }) => {
+  async (expoToken, { rejectWithValue }) => {
     try {
-      const response = await api.post('/api/profile/expo-token', { token });
+      const response = await api.post('/api/profile/expo-token', { expoToken });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Token registration failed');
@@ -57,13 +56,11 @@ export const registerPushToken = createAsyncThunk(
   }
 );
 
-// 4b. NEW: Remove Push Token
-// We call this right before or during the logout process
+
 export const removePushToken = createAsyncThunk(
   'profile/removePushToken',
   async (_, { rejectWithValue }) => {
     try {
-      // Per your screenshot: DELETE /api/user/profile/expo-token
       const response = await api.delete('/api/profile/expo-token');
       return response.data;
     } catch (err) {

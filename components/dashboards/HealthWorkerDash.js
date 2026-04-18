@@ -66,7 +66,6 @@ const HealthWorkerHome = ({ data }) => {
               />
             </View>
             <View>
-              <Text className="text-slate-400 text-xs font-medium">Good morning,</Text>
               <Text className="text-slate-900 text-xl font-bold">
                 {user?.first_name || 'Janet'}
               </Text>

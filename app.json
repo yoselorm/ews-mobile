@@ -14,21 +14,56 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
-    ]
+      "expo-secure-store",
+      "expo-audio",
+      "expo-av",
+      "@react-native-community/datetimepicker",
+      "expo-image-picker",
+      [
+        "expo-notifications",
+        {
+          "color": "#7C3AED"
+        }
+      ],
+       [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share images in your posts.",
+          "cameraPermission": "The app accesses your camera to let you take photos for your posts."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ba5ba303-ea61-4a67-ba69-d8a8c709201c"
+      }
+    },
+    "owner": "yoselorm"
   }
 }

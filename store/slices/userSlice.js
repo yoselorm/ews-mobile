@@ -7,7 +7,7 @@ export const createPregnantWoman = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       // Endpoint matches your backend structure for maternal registration
-      const response = await api.post('/v1/admin/users/pregnant-women', userData);
+      const response = await api.post('/user/pregnant-women', userData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to register pregnant woman');
@@ -21,7 +21,7 @@ export const createLactatingMother = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       // Endpoint matches your backend structure for postnatal registration
-      const response = await api.post('/v1/admin/users/lactating-mothers', userData);
+      const response = await api.post('/user/lactating-mothers', userData);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to register lactating mother');

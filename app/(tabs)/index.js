@@ -9,6 +9,7 @@ import AssemblyOfficialHome from '../../components/dashboards/OfficialDash';
 
 // Import our new slice action
 import { fetchHomeData } from '../../store/slices/homeSlice';
+import { ToastProvider } from '../../components/Toast';
 
 export default function HomeTab() {
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ export default function HomeTab() {
       >
         {renderDashboard()}
       </ScrollView>
+
+       <ToastProvider />
     </SafeAreaView>
   );
 }
