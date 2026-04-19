@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
+import axios from 'axios';
 
 // --- THUNKS ---
 
@@ -34,7 +35,7 @@ export const uploadAvatar = createAsyncThunk(
   'profile/uploadAvatar',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/avatar', formData, {
+      const response = await api.post('/user/avatar', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       return response.data;
@@ -48,7 +49,10 @@ export const registerPushToken = createAsyncThunk(
   'profile/registerPushToken',
   async (expoToken, { rejectWithValue }) => {
     try {
-      const response = await api.post('/api/profile/expo-token', { expoToken });
+      const token = await SecureStore.getItemAsync("userToken");
+      const response = await axios.post('/profile/expo-token', { expoToken }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Token registration failed');
@@ -61,7 +65,10 @@ export const removePushToken = createAsyncThunk(
   'profile/removePushToken',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.delete('/api/profile/expo-token');
+      const token = await SecureStore.getItemAsync("userToken");
+      const response = await axios.delete('/profile/expo-token', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to remove token');
@@ -120,7 +127,7 @@ const profileSlice = createSlice({
       })
       .addCase(uploadAvatar.fulfilled, (state, action) => {
         state.uploadingAvatar = false;
-        if (state.user) state.user.image_url = action.payload.image_url;
+        if (state.user) state.user.avatar_url = action.payload.data.avatar_url;
       })
       .addCase(uploadAvatar.rejected, (state) => {
         state.uploadingAvatar = false;

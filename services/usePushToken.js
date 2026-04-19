@@ -21,70 +21,72 @@ import { registerPushToken, removePushToken } from '../store/slices/profileSlice
  * Call the returned `removeToken()` on logout to clean up server-side.
  */
 export const usePushToken = ({ enabled = true } = {}) => {
-  const dispatch    = useDispatch();
-  const tokenRef    = useRef(null);
+    const dispatch = useDispatch();
+    const tokenRef = useRef(null);
 
-  useEffect(() => {
-    if (!enabled) return;
-    registerForPushNotifications();
-  }, [enabled]);
+    useEffect(() => {
+        if (!enabled) return;
+        registerForPushNotifications();
+    }, [enabled]);
 
-  const registerForPushNotifications = async () => {
-    // Push notifications only work on physical devices
-    if (!Device.isDevice) {
-      console.warn('[PushToken] Must use a physical device for push notifications');
-      return;
-    }
+    const registerForPushNotifications = async () => {
+        // Push notifications only work on physical devices
+        if (!Device.isDevice) {
+            console.warn('[PushToken] Must use a physical device for push notifications');
+            return;
+        }
 
-    // Android requires a notification channel
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#7C3AED',
-      });
-    }
+        // Android requires a notification channel
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#7C3AED',
+            });
+        }
 
-    // Request permission
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+        // Request permission
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
 
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
 
-    if (finalStatus !== 'granted') {
-      console.warn('[PushToken] Notification permission not granted');
-      return;
-    }
+        if (finalStatus !== 'granted') {
+            console.warn('[PushToken] Notification permission not granted');
+            return;
+        }
 
-    // Get Expo push token
-    // projectId is required for managed workflow — pulled from app.json / app.config.js
-    const projectId =
-      Constants.expoConfig?.extra?.eas?.projectId ??
-      Constants.easConfig?.projectId;
+        // Get Expo push token
+        // projectId is required for managed workflow — pulled from app.json / app.config.js
+        const projectId =
+            Constants.expoConfig?.extra?.eas?.projectId ??
+            Constants.easConfig?.projectId ??
+            Constants.manifest?.extra?.eas?.projectId ??
+            Constants.manifest2?.extra?.expoClient?.extra?.eas?.projectId;
 
-    if (!projectId) {
-      console.error('[PushToken] Missing EAS projectId in app config');
-      return;
-    }
+        if (!projectId) {
+            console.error('[PushToken] Missing EAS projectId in app config');
+            return;
+        }
 
-    try {
-      const { data: expoToken } = await Notifications.getExpoPushTokenAsync({ projectId });
-      tokenRef.current = expoToken;
-      console.log('[PushToken] Token:', expoToken);
+        try {
+            const { data: expoToken } = await Notifications.getExpoPushTokenAsync({ projectId });
+            tokenRef.current = expoToken;
+            console.log('[PushToken] Token:', expoToken);
 
-      // Send to backend
-      await dispatch(registerPushToken(expoToken)).unwrap();
-    } catch (err) {
-      console.error('[PushToken] Failed to get or register token:', err);
-    }
-  };
+            // Send to backend
+            await dispatch(registerPushToken(expoToken)).unwrap();
+        } catch (err) {
+            console.error('[PushToken] Failed to get or register token:', err);
+        }
+    };
 
-  // Call this on logout to remove the token from the backend
-  const removeToken = () => dispatch(removePushToken());
+    // Call this on logout to remove the token from the backend
+    const removeToken = () => dispatch(removePushToken());
 
-  return { removeToken };
+    return { removeToken };
 };

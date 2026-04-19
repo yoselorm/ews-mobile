@@ -6,6 +6,7 @@ import {
 import { Ionicons, Feather, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { useAudioPlayer } from 'expo-audio';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 const ALERT_CARD_WIDTH = width * 0.78;
@@ -190,6 +191,7 @@ const TipCard = ({ item, playingId, toggleAudio }) => {
 // ══════════════════════════════════════════════════════════════════════════════
 const MaternalDash = ({ data }) => {
     const { user } = useSelector((s) => s.auth);
+    const { user: profileUser } = useSelector((s) => s.profile);
     const { playingId, toggleAudio } = useAudio();
 
     const alerts = data?.climate_alerts || [];
@@ -210,10 +212,10 @@ const MaternalDash = ({ data }) => {
 
                 {/* ── Header ── */}
                 <View className="flex-row justify-between items-center mb-6">
-                    <View className="flex-row items-center gap-3">
+                    <TouchableOpacity onPress={() => router.push('profile')} className="flex-row items-center gap-3">
                         <View className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden border border-slate-100">
                             <Image
-                                source={{ uri: user?.avatar_url || 'https://avatar.iran.liara.run/public/job/doctor/male' }}
+                                source={{ uri: profileUser?.avatar_url || user?.avatar_url || 'https://avatar.iran.liara.run/public/job/doctor/male' }}
                                 className="w-full h-full"
                             />
                         </View>
@@ -222,8 +224,8 @@ const MaternalDash = ({ data }) => {
                                 {user?.first_name || 'Janet'}
                             </Text>
                         </View>
-                    </View>
-                    <TouchableOpacity className="p-2 bg-slate-50 rounded-full">
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.push('alerts')} className="p-2 bg-slate-50 rounded-full">
                         <Ionicons name="notifications-outline" size={24} color="#64748b" />
                     </TouchableOpacity>
                 </View>
