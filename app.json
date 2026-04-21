@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Early Warning System",
+    "name": "SafeMother+",
     "scheme": "early-warning-system",
     "slug": "ews",
     "version": "1.0.0",
@@ -17,9 +17,17 @@
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
+          "remote-notification",
           "remote-notification"
-        ]
-      }
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "icon": {
+        "dark": "./assets/ios-dark.png",
+        "light": "./assets/ios-light.png",
+        "tinted": "./assets/ios-tinted.png"
+      },
+      "bundleIdentifier": "com.yoselorm.ews"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,7 +40,8 @@
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE"
-      ]
+      ],
+      "package": "com.yoselorm.ews"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,6 +51,7 @@
       "expo-secure-store",
       "expo-audio",
       "expo-av",
+      "expo-splash-screen",
       "@react-native-community/datetimepicker",
       "expo-image-picker",
       [
@@ -50,7 +60,7 @@
           "color": "#7C3AED"
         }
       ],
-       [
+      [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share images in your posts.",

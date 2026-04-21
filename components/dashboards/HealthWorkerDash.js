@@ -50,7 +50,6 @@ const HealthWorkerHome = ({ data }) => {
     };
 
     const cStyle = getClimateStyles(climate?.status);
-    console.log(user.avatar_url)
 
     return (
         <View className="flex-1 bg-white">
