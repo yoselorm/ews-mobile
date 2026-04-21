@@ -14,11 +14,26 @@ const HealthWorkerHome = ({ data }) => {
     const stats = data?.patient_risk_summary;
     const patientList = data?.patients || [];
 
+    // --- ADDED THIS FUNCTION TO FIX YOUR ERROR ---
+    const getRiskStyles = (risk) => {
+        switch (risk?.toLowerCase()) {
+            case 'high':
+                return { bg: 'bg-red-50', text: 'text-red-600' };
+            case 'moderate':
+            case 'medium':
+                return { bg: 'bg-amber-50', text: 'text-amber-600' };
+            case 'safe':
+            case 'low':
+                return { bg: 'bg-emerald-50', text: 'text-emerald-600' };
+            default:
+                return { bg: 'bg-slate-50', text: 'text-slate-600' };
+        }
+    };
+
     // Softened Climate Styles
     const getClimateStyles = (status) => {
         switch (status?.toLowerCase()) {
             case 'critical':
-                // Soft Light Red Theme
                 return {
                     bg: 'bg-red-50',
                     border: 'border-red-100',
@@ -77,7 +92,7 @@ const HealthWorkerHome = ({ data }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Climate Status Card - Dynamic Colors */}
+                {/* Climate Status Card */}
                 <View className={`${cStyle.bg} border ${cStyle.border} rounded-[32px] p-6 mb-6`}>
                     <View className="flex-row justify-between items-start mb-2">
                         <View>
@@ -100,7 +115,6 @@ const HealthWorkerHome = ({ data }) => {
                     <View className="flex-row items-center gap-2">
                         <MaterialCommunityIcons name="map-marker-radius" size={16} color={climate?.status === 'safe' ? '#ecfdf5' : '#ef4444'} />
                         <Text className={`${cStyle.text} text-xs font-semibold`}>{climate?.community_name || 'Your location'}</Text>
-                        {/* <Feather name="volume-2" size={16} color={climate?.status === 'safe' ? 'white' : '#ef4444'} style={{ marginLeft: 'auto' }} /> */}
                     </View>
                 </View>
 
@@ -140,28 +154,6 @@ const HealthWorkerHome = ({ data }) => {
                 </View>
 
                 {/* Patient List */}
-                {/* <View className="space-y-3 mb-6">
-          {patientList.map((item) => (
-            <TouchableOpacity 
-              key={item.id} 
-              className="flex-row items-center bg-white p-3 rounded-2xl border border-slate-50 shadow-sm shadow-slate-200 mb-3"
-            >
-              <View className="w-10 h-10 rounded-full bg-purple-100 items-center justify-center mr-3">
-                <Text className="text-purple-600 font-bold text-xs">{item.name[0]}</Text>
-              </View>
-              <View className="flex-1">
-                <Text className="font-bold text-slate-800 text-sm">{item.name}</Text>
-                <Text className="text-slate-400 text-[10px]">{item.role_label}</Text>
-              </View>
-              <View className={`${item.risk_level === 'high' ? 'bg-red-50' : item.risk_level === 'moderate' ? 'bg-yellow-50' : 'bg-emerald-50'} px-3 py-1 rounded-full`}>
-                <Text className={`${item.risk_level === 'high' ? 'text-red-500' : item.risk_level === 'moderate' ? 'text-yellow-600' : 'text-emerald-600'} text-[10px] font-bold uppercase`}>
-                  {item.risk_level}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View> */}
-
                 <View className="mb-6">
                     {patientList.length > 0 ? (
                         patientList.map((item) => {
@@ -192,7 +184,7 @@ const HealthWorkerHome = ({ data }) => {
                     )}
                 </View>
 
-                {/* Reverted Action Buttons */}
+                {/* Action Buttons */}
                 <View className="flex-col gap-3">
                     <TouchableOpacity
                         onPress={() => router.push('/health-worker/register-pregnant-woman')}
@@ -214,7 +206,6 @@ const HealthWorkerHome = ({ data }) => {
                         <Ionicons name="arrow-forward" size={18} color="white" />
                     </TouchableOpacity>
                 </View>
-
             </ScrollView>
         </View>
     );

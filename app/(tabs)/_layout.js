@@ -13,7 +13,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: '#7C3AED', // Vibrant purple
         tabBarInactiveTintColor: '#9CA3AF', // Soft gray
         tabBarStyle: {
-        height: 84,
+          height: Platform.OS === 'ios' ? 84 : 108,
           paddingBottom: 10,
           paddingTop: 10,
           borderTopWidth: 1,
@@ -24,6 +24,7 @@ export default function TabsLayout() {
           fontSize: 12,
           fontWeight: '500',
         },
+
       }}
     >
       <Tabs.Screen
@@ -31,10 +32,10 @@ export default function TabsLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons 
-              name={focused ? "home" : "home-outline"} 
-              size={24} 
-              color={color} 
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={24}
+              color={color}
             />
           ),
         }}
@@ -45,10 +46,10 @@ export default function TabsLayout() {
         options={{
           title: 'Alerts',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons 
-              name={focused ? "notifications" : "notifications-outline"} 
-              size={24} 
-              color={color} 
+            <Ionicons
+              name={focused ? "notifications" : "notifications-outline"}
+              size={24}
+              color={color}
             />
           ),
         }}
@@ -59,10 +60,10 @@ export default function TabsLayout() {
         options={{
           title: 'Guide',
           tabBarIcon: ({ color, focused }) => (
-            <Feather 
-              name="book-open" 
-              size={24} 
-              color={color} 
+            <Feather
+              name="book-open"
+              size={24}
+              color={color}
             />
           ),
         }}
@@ -73,16 +74,16 @@ export default function TabsLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons 
-              name={focused ? "person" : "person-outline"} 
-              size={24} 
-              color={color} 
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={24}
+              color={color}
             />
           ),
         }}
       />
 
-      
+
     </Tabs>
   );
 }

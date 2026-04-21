@@ -2,7 +2,7 @@
   "expo": {
     "name": "SafeMother+",
     "scheme": "early-warning-system",
-    "slug": "ews",
+    "slug": "early-warning-sys",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,7 +27,7 @@
         "light": "./assets/ios-light.png",
         "tinted": "./assets/ios-tinted.png"
       },
-      "bundleIdentifier": "com.yoselorm.ews"
+      "bundleIdentifier": "com.yoselorm.earlywarningsys"
     },
     "android": {
       "adaptiveIcon": {
@@ -41,7 +41,7 @@
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE"
       ],
-      "package": "com.yoselorm.ews"
+      "package": "com.yoselorm.earlywarningsys"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -71,7 +71,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "ba5ba303-ea61-4a67-ba69-d8a8c709201c"
+        "projectId": "f7711ce0-eb27-4838-9776-d8e81e743c3b"
       }
     },
     "owner": "yoselorm"
