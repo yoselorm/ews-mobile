@@ -225,7 +225,7 @@ export default function RegisterLactatingMother() {
     mode_of_delivery:        '',
     number_of_babies:        '1',
     delivery_location:       '',
-    delivery_date:           '',
+    // delivery_date:           '',
     emergency_contact_name:  '',
     emergency_contact_phone: '',
   });
@@ -387,14 +387,14 @@ export default function RegisterLactatingMother() {
             onSelect={set('mode_of_delivery')}
           />
 
-          <View className="flex-row gap-4">
+          {/* <View className="flex-row gap-4">
             <View className="flex-1">
               <InputField label="No. of Babies" placeholder="1" keyboardType="numeric" value={formData.number_of_babies} onChangeText={set('number_of_babies')} />
             </View>
             <View className="flex-1">
               <DateField label="Delivery Date" value={formData.delivery_date} onChange={set('delivery_date')} maxDate={new Date()} />
             </View>
-          </View>
+          </View> */}
 
           <InputField label="Delivery Location" placeholder="Hospital / Clinic name" value={formData.delivery_location} onChangeText={set('delivery_location')} />
 
