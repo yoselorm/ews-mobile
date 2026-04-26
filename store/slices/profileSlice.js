@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 import axios from 'axios';
+import { api_url } from '../../services/config';
+import * as SecureStore from 'expo-secure-store';
+
 
 // --- THUNKS ---
 
@@ -50,11 +53,12 @@ export const registerPushToken = createAsyncThunk(
   async (expoToken, { rejectWithValue }) => {
     try {
       const token = await SecureStore.getItemAsync("userToken");
-      const response = await axios.post('/profile/expo-token', { expoToken }, {
+      const response = await axios.post(`${api_url}/profile/expo-token`, { expo_push_token: expoToken }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (err) {
+      console.error("Push token registration failed:", err.response?.data?.message || 'Token registration failed');
       return rejectWithValue(err.response?.data?.message || 'Token registration failed');
     }
   }
@@ -66,11 +70,13 @@ export const removePushToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = await SecureStore.getItemAsync("userToken");
-      const response = await axios.delete('/profile/expo-token', {
+      console.log(token)
+      const response = await axios.delete(`${api_url}/profile/expo-token`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (err) {
+      console.error("Push token removal failed:", err.response?.data?.message || 'Failed to remove token');
       return rejectWithValue(err.response?.data?.message || 'Failed to remove token');
     }
   }
@@ -131,6 +137,11 @@ const profileSlice = createSlice({
       })
       .addCase(uploadAvatar.rejected, (state) => {
         state.uploadingAvatar = false;
+      })
+
+      //Expo Push Token Registration
+      .addCase(registerPushToken.rejected, (state, action) => {
+        console.error("Push token registration failed:", action.payload);
       })
 
       // Update Profile

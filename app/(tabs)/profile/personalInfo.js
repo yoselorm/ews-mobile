@@ -45,8 +45,8 @@ export default function PersonalInfo() {
     phone_number: '',
     dob: '',
     gender: '',
-    emergency_contact_name: '',
-    emergency_contact_phone: '',
+    // emergency_contact_name: '',
+    // emergency_contact_phone: '',
   });
 
   useEffect(() => {
@@ -58,8 +58,8 @@ export default function PersonalInfo() {
         phone_number: user.phone_number || '',
         dob: user.dob || '',
         gender: user.gender || '',
-        emergency_contact_name: user.profile?.emergency_contact_name || '',
-        emergency_contact_phone: user.profile?.emergency_contact_phone || '',
+        // emergency_contact_name: user.profile?.emergency_contact_name || '',
+        // emergency_contact_phone: user.profile?.emergency_contact_phone || '',
       });
     } else {
       dispatch(fetchProfile());
@@ -204,31 +204,6 @@ export default function PersonalInfo() {
           </View>
         </View>
 
-        <View className="h-[1px] bg-gray-100 my-8" />
-
-        <Text className="text-xl font-extrabold text-gray-900 mb-6">Emergency Contact</Text>
-
-        <InfoField
-          label="Full Name"
-          value={formData.emergency_contact_name}
-          field="emergency_contact_name"
-          icon="shield"
-          placeholder="Contact Name"
-          isEditing={isEditing}
-          onChange={handleFieldChange}
-        />
-
-        <InfoField
-          label="Phone Number"
-          value={formData.emergency_contact_phone}
-          field="emergency_contact_phone"
-          icon="phone-call"
-          keyboardType="phone-pad"
-          isEditing={isEditing}
-          onChange={handleFieldChange}
-        />
-
-        <View className="mb-20" />
       </ScrollView>
     </KeyboardAvoidingView>
   );

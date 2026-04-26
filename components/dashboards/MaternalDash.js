@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     View, Text, TouchableOpacity,
-    FlatList, Dimensions, Linking, Image, ActivityIndicator
+    FlatList, Dimensions, Linking, Image, ImageBackground, ActivityIndicator
 } from 'react-native';
 import { Ionicons, Feather, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
@@ -23,15 +23,6 @@ const getRiskStyle = (status) => {
     }
 };
 
-const getCategoryConfig = (category) => {
-    switch (category?.toLowerCase()) {
-        case 'hydration': return { icon: 'cup-water', color: '#3B82F6', bg: '#EFF6FF' };
-        case 'nutrition': return { icon: 'food-apple', color: '#10B981', bg: '#F0FDF4' };
-        case 'exercise': return { icon: 'run', color: '#8B5CF6', bg: '#F5F3FF' };
-        case 'sleep': return { icon: 'sleep', color: '#6366F1', bg: '#EEF2FF' };
-        default: return { icon: 'lightbulb-outline', color: '#F59E0B', bg: '#FFFBEB' };
-    }
-};
 
 // ─── Shared audio hook ─────────────────────────────────────────────────────────
 const useAudio = () => {
@@ -141,54 +132,102 @@ const AlertCard = ({ item, playingId, toggleAudio }) => {
 };
 
 // ─── Health Tip Card ───────────────────────────────────────────────────────────
-const TipCard = ({ item, playingId, toggleAudio }) => {
-    const cat = getCategoryConfig(item.category);
-    const isPlaying = playingId === item.id;
 
-    return (
+
+const TipCard = ({ item, playingId, toggleAudio, onOpenModal }) => {
+    // Standard category config fallback
+    const isPlaying = playingId === item.id;
+    const hasImage = !!item.image_url;
+
+    // Reuseable Inner UI
+    const InnerContent = (
         <View
-            style={{ width: TIP_CARD_WIDTH, backgroundColor: cat.bg }}
-            className="rounded-3xl p-5 mr-3"
+            className={`p-5 rounded-3xl h-full justify-between ${hasImage ? 'bg-black/40' : ''}`}
+            style={{ width: TIP_CARD_WIDTH }}
         >
-            <View className="flex-row items-center mb-3" style={{ gap: 10 }}>
-                <View style={{ backgroundColor: 'white' }} className="p-2.5 rounded-2xl shadow-sm">
-                    <MaterialCommunityIcons name={cat.icon} size={22} color={cat.color} />
+            <View>
+                {/* Header: Icon & Category */}
+                <View className="flex-row items-center mb-3" style={{ gap: 10 }}>
+                    <View
+                        style={{ backgroundColor: hasImage ? 'rgba(255,255,255,0.2)' : 'white' }}
+                        className="p-2 rounded-xl shadow-sm"
+                    >
+
+                    </View>
+                    <Text
+                        className={`text-[9px] font-black uppercase tracking-[2px] ${hasImage ? 'text-white' : ''}`}
+                    >
+                        {item.category?.name}
+                    </Text>
                 </View>
-                <Text style={{ color: cat.color }} className="text-[9px] font-black uppercase tracking-[2px]">
-                    {item.category}
+
+                {/* Title & Body */}
+                <Text
+                    className={`font-black text-sm mb-1.5 leading-5 ${hasImage ? 'text-white' : 'text-slate-800'}`}
+                    numberOfLines={2}
+                >
+                    {item.title}
+                </Text>
+                <Text
+                    className={`text-[11px] leading-4 ${hasImage ? 'text-slate-200' : 'text-slate-500'}`}
+                    numberOfLines={2}
+                >
+                    {item.content}
                 </Text>
             </View>
 
-            <Text className="text-slate-800 font-bold text-sm mb-2" numberOfLines={2}>{item.title}</Text>
-            <Text className="text-slate-500 text-xs leading-4 mb-4" numberOfLines={3}>{item.content}</Text>
-
+            {/* Audio Action Button */}
             <TouchableOpacity
                 onPress={() => item.audio_url && toggleAudio(item.id, item.audio_url)}
                 style={{
-                    backgroundColor: isPlaying ? cat.color : 'white',
-                    borderColor: '#E2E8F0', borderWidth: 1,
+                    backgroundColor: isPlaying ? (hasImage ? 'white' : '') : (hasImage ? 'rgba(255,255,255,0.2)' : 'white'),
+                    borderColor: hasImage ? 'transparent' : '#F1F5F9',
+                    borderWidth: 1,
                     opacity: item.audio_url ? 1 : 0.5,
                 }}
-                className="flex-row items-center justify-center py-2 rounded-xl"
+                className="flex-row items-center justify-center py-2.5 rounded-2xl mt-4"
                 disabled={!item.audio_url}
             >
                 <Ionicons
-                    name={item.audio_url ? (isPlaying ? 'pause' : 'volume-high') : 'volume-mute-outline'}
+                    name={item.audio_url ? (isPlaying ? 'stop' : 'play') : 'volume-mute'}
                     size={14}
-                    color={isPlaying ? 'white' : item.audio_url ? cat.color : '#CBD5E1'}
+                    color={isPlaying ? (hasImage ? 'black' : 'white') : (hasImage ? 'white' : '')}
                 />
                 <Text
-                    style={{ color: isPlaying ? 'white' : item.audio_url ? cat.color : '#CBD5E1' }}
-                    className="font-bold text-[10px] ml-1.5"
+                    className="font-black text-[9px] uppercase ml-2 tracking-widest"
+                    style={{ color: isPlaying ? (hasImage ? 'black' : 'white') : (hasImage ? 'white' : '') }}
                 >
-                    {item.audio_url ? (isPlaying ? 'Playing...' : 'Listen') : 'No audio'}
+                    {item.audio_url ? (isPlaying ? 'Stop' : 'Listen') : 'No audio'}
                 </Text>
             </TouchableOpacity>
         </View>
     );
+
+    return (
+        <TouchableOpacity
+            activeOpacity={0.9}
+            className="mr-4 shadow-sm shadow-slate-300"
+            style={{ width: TIP_CARD_WIDTH, height: 220 }}
+        >
+            {hasImage ? (
+                <ImageBackground
+                    source={{ uri: item.image_url }}
+                    imageStyle={{ borderRadius: 24 }}
+                    className="flex-1 overflow-hidden rounded-3xl"
+                >
+                    {InnerContent}
+                </ImageBackground>
+            ) : (
+                <View
+                    className="flex-1 rounded-3xl border border-slate-50 bg-blue-200"
+                >
+                    {InnerContent}
+                </View>
+            )}
+        </TouchableOpacity>
+    );
 };
 
-// ══════════════════════════════════════════════════════════════════════════════
 const MaternalDash = ({ data }) => {
     const { user } = useSelector((s) => s.auth);
     const { user: profileUser } = useSelector((s) => s.profile);
@@ -198,13 +237,15 @@ const MaternalDash = ({ data }) => {
     const tips = data?.health_advice?.health_tips || [];
     const emergency = data?.emergency || {};
 
-    const highestAlert = alerts[0];
+    const highestAlert = alerts.map(a => a.horizon == 'current' ? a : null).filter(Boolean)[0] || null;
+    const displayAlerts = alerts.filter(a => a.horizon !== 'current');
     const risk = getRiskStyle(highestAlert?.status);
 
     const handleCall = (number) => {
         if (!number) return;
         Linking.openURL(`tel:${number}`);
     };
+
 
     return (
         <View className="flex-1 bg-white">
@@ -221,7 +262,7 @@ const MaternalDash = ({ data }) => {
                         </View>
                         <View>
                             <Text className="text-slate-900 text-xl font-bold">
-                                {user?.first_name || 'Janet'}
+                                {user?.first_name || 'User'}
                             </Text>
                         </View>
                     </TouchableOpacity>
@@ -246,6 +287,10 @@ const MaternalDash = ({ data }) => {
                                 <Text style={{ color: risk.text }} className="text-2xl font-black capitalize mb-1">
                                     {highestAlert.status} Risk
                                 </Text>
+                                <View className="flex-row items-baseline mb-3">
+                                    <Text style={{ color: risk.text }} className="text-3xl font-black">{highestAlert.triggered_value}</Text>
+                                    <Text style={{ color: risk.text }} className="text-sm font-bold ml-1">{highestAlert.unit}</Text>
+                                </View>
                                 <Text className="text-slate-600 text-sm leading-5">{highestAlert.description}</Text>
                             </View>
                             <Ionicons name={risk.icon} size={44} color={risk.iconColor} />
@@ -292,10 +337,10 @@ const MaternalDash = ({ data }) => {
                 <View className="mb-5">
                     <View className="flex-row justify-between items-center mb-3">
                         <Text className="text-slate-900 font-bold text-base">Climate Alerts</Text>
-                        <Text className="text-slate-400 text-xs font-bold">{alerts.length} active</Text>
+                        <Text className="text-slate-400 text-xs font-bold">{displayAlerts?.length} active</Text>
                     </View>
                     <FlatList
-                        data={alerts.length > 0 ? alerts : [{ _empty: true }]}
+                        data={displayAlerts?.length > 0 ? displayAlerts : [{ _empty: true }]}
                         horizontal
                         showsHorizontalScrollIndicator={false}
                         keyExtractor={(item, i) => item._empty ? 'empty-alert' : `alert-${i}`}

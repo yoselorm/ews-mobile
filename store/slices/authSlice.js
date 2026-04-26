@@ -83,6 +83,9 @@ const authSlice = createSlice({
       })
       .addCase(loadAuthData.rejected, (state) => {
         state.isLoading = false;
+        state.token = null;
+        state.user = null;
+        state.isAuthenticated = false;
       })
 
       // Save Data
