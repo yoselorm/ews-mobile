@@ -3,6 +3,10 @@
 // import { useAppDispatch } from "../store/hooks";
 // import { router } from "expo-router";
 
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 // export default function HomeScreen() {
 // const dispatch = useAppDispatch();
 //    const handleLogout = async () => {
@@ -30,23 +34,40 @@
 // }
 
 
-import { Redirect } from "expo-router";
-import { useSelector } from "react-redux";
+// import { Redirect } from "expo-router";
+// import { useSelector } from "react-redux";
+// export default function Index() {
+//   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+//   console.log("Auth State on Index:", { isAuthenticated, isLoading });
+
+//   // While we check SecureStore, don't show anything 
+//   // (The Splash screen is visible anyway)
+//   if (isLoading) return null;
+
+//   // If we have a token, go to the tabs. If not, go to login.
+//   if (isAuthenticated) {
+//     return <Redirect href="/(tabs)" />;
+//   } else {
+//     return <Redirect href="/login" />;
+//   }
+// }
+
 export default function Index() {
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const router = useRouter();
 
-  // While we check SecureStore, don't show anything 
-  // (The Splash screen is visible anyway)
-  if (isLoading) return null;
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        router.replace("/(tabs)");
+      } else {
+        router.replace("/login");
+      }
+    }
+  }, [isLoading, isAuthenticated]);
 
-  // If we have a token, go to the tabs. If not, go to login.
-  if (isAuthenticated) {
-    return <Redirect href="/(tabs)" />;
-  } else {
-    return <Redirect href="/login" />;
-  }
+  return null; // Keep it clean while redirecting
 }
-
 
 // import { useSelector } from "react-redux";
 // import HealthWorkerDashboard from "../components/HealthWorkerDashboard";

@@ -17,8 +17,10 @@ const HealthWorkerHome = ({ data }) => {
     // --- ADDED THIS FUNCTION TO FIX YOUR ERROR ---
     const getRiskStyles = (risk) => {
         switch (risk?.toLowerCase()) {
-            case 'high':
+            case 'critical':
                 return { bg: 'bg-red-50', text: 'text-red-600' };
+            case 'high':
+                return { bg: 'bg-pink-50', text: 'text-pink-600' };
             case 'moderate':
             case 'medium':
                 return { bg: 'bg-amber-50', text: 'text-amber-600' };
@@ -147,10 +149,12 @@ const HealthWorkerHome = ({ data }) => {
                     <View className="absolute left-4 top-3.5 z-10">
                         <Feather name="search" size={18} color="#94a3b8" />
                     </View>
-                    <TextInput
-                        placeholder="Search patients..."
+                    <TouchableOpacity
+                    onPress={()=> router.push('/health-worker/patients')}
                         className="bg-slate-50 rounded-2xl py-3.5 pl-12 pr-4 text-slate-600 font-medium border border-slate-100"
-                    />
+                    >
+                        <Text className="text-slate-400">Search patients...</Text>
+                    </TouchableOpacity>
                 </View>
 
                 {/* Patient List */}
@@ -161,6 +165,7 @@ const HealthWorkerHome = ({ data }) => {
                             return (
                                 <TouchableOpacity
                                     key={item.id}
+                                    onPress={() => router.push(`/health-worker/patients/${item.id}`)}
                                     className="flex-row items-center bg-white p-4 rounded-2xl border border-slate-50 mb-3 shadow-sm shadow-slate-200"
                                 >
                                     <View className="w-12 h-12 rounded-2xl bg-purple-50 items-center justify-center mr-4">

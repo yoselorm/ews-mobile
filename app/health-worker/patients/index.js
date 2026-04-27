@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, TextInput, FlatList, ActivityIndicator, I
 import { useDispatch, useSelector } from 'react-redux';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { fetchPatients, clearPatientError } from '../../store/slices/patientSlice';
 import { debounce } from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { fetchPatients } from '../../../store/slices/patientSlice';
 
 const PatientsPage = () => {
   const router = useRouter();
@@ -35,7 +35,8 @@ const PatientsPage = () => {
 
   const getRiskStyles = (risk) => {
     switch (risk?.toLowerCase()) {
-      case 'high': return { text: 'text-red-500', bg: 'bg-red-50', icon: 'alert-circle' };
+      case 'high': return { text: 'text-pink-500', bg: 'bg-pink-50', icon: 'alert-circle' };
+      case 'critical': return { text: 'text-red-500', bg: 'bg-red-50', icon: 'alert-circle' };
       case 'moderate': return { text: 'text-yellow-600', bg: 'bg-yellow-50', icon: 'trending-up' };
       default: return { text: 'text-emerald-500', bg: 'bg-emerald-50', icon: 'checkmark-circle' };
     }

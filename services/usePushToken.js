@@ -23,7 +23,7 @@ useEffect(() => {
   if (!enabled || !isAuthenticated) return;
 
   registerForPushNotifications();
-}, [enabled, isAuthenticated]);
+}, [enabled, isAuthenticated , dispatch]);
 
     const registerForPushNotifications = async () => {
         // Push notifications only work on physical devices
