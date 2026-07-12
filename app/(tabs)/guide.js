@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { fetchHealthTips, fetchSafetyGuides } from '../../store/slices/contentSlice';
 import ResourceDetailModal from '../../components/ResourceDetailModal';
+import { useForegroundRefresh } from '../../services/useForegroundRefresh';
 
 const ContentPage = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,12 @@ const ContentPage = () => {
   useEffect(() => {
     loadInitialData();
   }, [activeTab]);
+
+   useForegroundRefresh(`lastFetch:content:${activeTab}`, () => {
+    setPage(1);
+    const action = activeTab === 'health' ? fetchHealthTips : fetchSafetyGuides;
+    dispatch(action({ page: 1 }));
+  });
 
   const loadInitialData = () => {
     setPage(1);

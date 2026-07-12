@@ -10,6 +10,7 @@ import AssemblyOfficialHome from '../../components/dashboards/OfficialDash';
 // Import our new slice action
 import { fetchHomeData } from '../../store/slices/homeSlice';
 import { ToastProvider } from '../../components/Toast';
+import { useForegroundRefresh } from '../../services/useForegroundRefresh';
 
 export default function HomeTab() {
   const dispatch = useDispatch();
@@ -22,6 +23,12 @@ export default function HomeTab() {
   useEffect(() => {
     dispatch(fetchHomeData());
   }, [dispatch]);
+
+  // 1b. Foreground staleness check — refetches if 8hrs have passed since last fetch,
+  // covers the case where the app sat backgrounded with stale in-memory Redux state
+  useForegroundRefresh('lastFetch:homeData', () => {
+    dispatch(fetchHomeData());
+  });
 
   // 2. Refresh Handler (Optional but recommended for mobile)
   const onRefresh = () => {

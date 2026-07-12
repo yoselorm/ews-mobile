@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Audio } from 'expo-av';
 import { fetchUserAlerts, markAlertAsRead, markAllAlertsAsRead } from '../../store/slices/alertSlice';
 import toast from '../../components/Toast';
+import { useForegroundRefresh } from '../../services/useForegroundRefresh';
 
 const AlertPage = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const AlertPage = () => {
       }
     };
   }, []);
+
+  useForegroundRefresh('lastFetch:userAlerts', () => {
+      dispatch(fetchUserAlerts());
+    });
 
   const loadAlerts = () => {
     dispatch(fetchUserAlerts());
@@ -103,9 +108,9 @@ const AlertPage = () => {
 
   const getRiskStyles = (risk) => {
     switch (risk?.toLowerCase()) {
-      case 'critical':
-        return { color: '#ef4444', bg: 'bg-red-50', icon: 'alert-circle' };
       case 'high':
+        return { color: '#ef4444', bg: 'bg-red-50', icon: 'alert-circle' };
+      case 'critical':
         return { color: '#ad0591', bg: 'bg-pink-50', icon: 'warning' };
       case 'moderate':
         return { color: '#eab308', bg: 'bg-yellow-50', icon: 'shield-outline' };

@@ -17,12 +17,11 @@ const HealthWorkerHome = ({ data }) => {
     // --- ADDED THIS FUNCTION TO FIX YOUR ERROR ---
     const getRiskStyles = (risk) => {
         switch (risk?.toLowerCase()) {
-            case 'critical':
-                return { bg: 'bg-red-50', text: 'text-red-600' };
             case 'high':
+                return { bg: 'bg-red-50', text: 'text-red-600' };
+            case 'critical':
                 return { bg: 'bg-pink-50', text: 'text-pink-600' };
             case 'moderate':
-            case 'medium':
                 return { bg: 'bg-amber-50', text: 'text-amber-600' };
             case 'safe':
             case 'low':
@@ -35,24 +34,32 @@ const HealthWorkerHome = ({ data }) => {
     // Softened Climate Styles
     const getClimateStyles = (status) => {
         switch (status?.toLowerCase()) {
-            case 'critical':
+            case 'high':
                 return {
                     bg: 'bg-red-50',
                     border: 'border-red-100',
                     text: 'text-red-600',
                     sub: 'text-red-500',
                     icon: 'alert-circle',
-                    iconBg: 'bg-red-100'
+                    iconBg: 'bg-red-500'
                 };
-            case 'warning':
             case 'moderate':
                 return {
-                    bg: 'bg-amber-50',
+                    bg: 'bg-amber-100',
                     border: 'border-amber-100',
                     text: 'text-amber-600',
                     sub: 'text-amber-500',
                     icon: 'warning',
-                    iconBg: 'bg-amber-100'
+                    iconBg: 'bg-amber-500'
+                };
+            case 'low':
+                return {
+                    bg: 'bg-emerald-50',
+                    border: 'border-emerald-100',
+                    text: 'text-emerald-600',
+                    sub: 'text-emerald-500',
+                    icon: 'warning',
+                    iconBg: 'bg-emerald-600'
                 };
             default: // Safe
                 return {
@@ -130,10 +137,18 @@ const HealthWorkerHome = ({ data }) => {
                         <Text className="text-xl font-bold text-yellow-600">{stats?.moderate || 0}</Text>
                         <Text className="text-[10px] text-slate-400 font-bold uppercase text-center mt-1">Moderate</Text>
                     </View>
+                  { stats?.low !== undefined && (
+                    <View className="bg-slate-50 rounded-2xl p-4 w-[30%] items-center border border-slate-100">
+                        <Text className="text-xl font-bold text-emerald-600">{stats?.low || 0}</Text>
+                        <Text className="text-[10px] text-slate-400 font-bold uppercase text-center mt-1">Low Risk</Text>
+                    </View>
+                   )}
+                   {stats?.safe !== undefined && (
                     <View className="bg-slate-50 rounded-2xl p-4 w-[30%] items-center border border-slate-100">
                         <Text className="text-xl font-bold text-emerald-600">{stats?.safe || 0}</Text>
                         <Text className="text-[10px] text-slate-400 font-bold uppercase text-center mt-1">Safe</Text>
                     </View>
+                   )}
                 </View>
 
                 {/* Patients Header */}

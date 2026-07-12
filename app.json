@@ -3,13 +3,6 @@
     "name": "SafeMother+",
     "scheme": "early-warning-system",
     "slug": "early-warning-sys",
-     "notification": {
-      "icon": "./assets/ios-light.png",
-      "color": "#ffffff",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Updates from Your App",
-      "iosDisplayInForeground": true
-    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,13 +16,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification",
-          "remote-notification",
-          "remote-notification",
-          "remote-notification"
-        ],
-        "ITSAppUsesNonExemptEncryption": false
+        "UIBackgroundModes": ["remote-notification"],
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserNotificationsUsageDescription": "We use notifications to alert you about important updates."
       },
       "icon": {
         "dark": "./assets/ios-dark.png",
@@ -48,10 +37,6 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECEIVE_BOOT_COMPLETED",
-        "android.permission.VIBRATE",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE"
       ],
       "package": "com.yoselorm.earlywarningsys"
@@ -66,18 +51,19 @@
       "expo-av",
       "expo-splash-screen",
       "@react-native-community/datetimepicker",
-      "expo-image-picker",
       [
         "expo-notifications",
         {
-          "color": "#7C3AED"
+          "icon": "./assets/notification-icon.png",
+          "color": "#7C3AED",
+          "defaultChannel": "default"
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you share images in your posts.",
-          "cameraPermission": "The app accesses your camera to let you take photos for your posts."
+          "photosPermission": "The app accesses your photos to let you update your profile.",
+          "cameraPermission": "The app accesses your camera to let you take photos for your profile."
         }
       ]
     ],

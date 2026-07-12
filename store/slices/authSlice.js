@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { api_url } from "../../services/config";
+import { removePushToken } from "./profileSlice";
 
 // --- Async Thunks ---
 
@@ -27,9 +28,17 @@ export const loadAuthData = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   "auth/logout",
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const token = await SecureStore.getItemAsync("userToken");
+
+      // Remove the push token from the backend WHILE we still have
+      // the auth token in SecureStore. Don't let a failure here
+      // block logout — just log it.
+      await dispatch(removePushToken()).unwrap().catch((err) => {
+        console.warn("Push token removal failed during logout:", err);
+      });
+
       // Use axios directly as requested
       await axios.post(`${api_url}/logout`, {}, {
         headers: { Authorization: `Bearer ${token}` },

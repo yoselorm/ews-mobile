@@ -207,19 +207,19 @@ export default function ProfileIndex() {
   };
 
   // ── Logout ─────────────────────────────────────────────────────────────────
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await dispatch(removePushToken()).unwrap();
-      await dispatch(logout()).unwrap();
-      setLogoutVisible(false);
-    } catch {
-      await dispatch(logout());
-      setLogoutVisible(false);
-    } finally {
-      setIsLoggingOut(false);
-    }
-  };
+const handleLogout = async () => {
+  setIsLoggingOut(true);
+  try {
+    await dispatch(logout()).unwrap();
+    setLogoutVisible(false);
+  } catch {
+    // logout thunk always clears local SecureStore in its own `finally`,
+    // even if the server call fails — so state is still safe to close out
+    setLogoutVisible(false);
+  } finally {
+    setIsLoggingOut(false);
+  }
+};
 
   if (loading && !user) {
     return (

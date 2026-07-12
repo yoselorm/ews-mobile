@@ -11,20 +11,6 @@ export const usePushToken = ({ enabled = true } = {}) => {
     const tokenRef = useRef(null);
     const { isAuthenticated } = useSelector((state) => state.auth);
 
-
-
-    // useEffect(() => {
-    //     if (!enabled) return;
-    //     registerForPushNotifications();
-    // }, [enabled]);
-
-
-useEffect(() => {
-  if (!enabled || !isAuthenticated) return;
-
-  registerForPushNotifications();
-}, [enabled, isAuthenticated , dispatch]);
-
     const registerForPushNotifications = async () => {
         // Push notifications only work on physical devices
         if (!Device.isDevice) {
@@ -60,9 +46,7 @@ useEffect(() => {
         // projectId is required for managed workflow — pulled from app.json / app.config.js
         const projectId =
             Constants.expoConfig?.extra?.eas?.projectId ??
-            Constants.easConfig?.projectId 
-            // Constants.manifest?.extra?.eas?.projectId ??
-            // Constants.manifest2?.extra?.expoClient?.extra?.eas?.projectId;
+            Constants.easConfig?.projectId;
 
         if (!projectId) {
             console.error('[PushToken] Missing EAS projectId in app config');
@@ -80,8 +64,18 @@ useEffect(() => {
         }
     };
 
-    // Call this on logout to remove the token from the backend
-    const removeToken = () => dispatch(removePushToken());
+    useEffect(() => {
+        if (!enabled || !isAuthenticated) return;
+
+        registerForPushNotifications();
+    }, [enabled, isAuthenticated, dispatch]);
+
+    // Available if you ever need to remove the token manually.
+    // Logout already handles this automatically via the logout thunk.
+    const removeToken = () => {
+        dispatch(removePushToken());
+        tokenRef.current = null;
+    };
 
     return { removeToken };
 };

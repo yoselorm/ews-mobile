@@ -19,7 +19,9 @@ function AuthGate() {
     (state) => state.auth
   );
 
-  const { removeToken } = usePushToken({ enabled: isAuthenticated });
+  // Registers push token when authenticated. Removal on logout is
+  // handled inside the logout thunk (authSlice.js), not here.
+  usePushToken({ enabled: isAuthenticated });
 
   useEffect(() => {
     if (isLoading) return;
@@ -56,10 +58,13 @@ function LayoutContent() {
       }),
     });
 
-   const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+    // NOTE: currently routes every notification tap to /alerts.
+    // If more notification types are added later, branch on
+    // response.notification.request.content.data here.
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       setTimeout(() => {
         router.push("/(tabs)/alerts");
-      }, 500); 
+      }, 500);
     });
 
     return () => subscription.remove();
