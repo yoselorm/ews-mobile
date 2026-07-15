@@ -11,6 +11,9 @@ import { usePushToken } from "../services/usePushToken";
 // Keep splash visible until auth check completes
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
+// Segments reachable without an authenticated session
+const PUBLIC_SEGMENTS = ["login", "legal"];
+
 function AuthGate() {
   const router = useRouter();
   const segments = useSegments();
@@ -26,15 +29,15 @@ function AuthGate() {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthGroup = segments?.[0] === "login";
+    const inPublicGroup = PUBLIC_SEGMENTS.includes(segments?.[0]);
 
     // User logged out while inside app
-    if (!isAuthenticated && !inAuthGroup && segments.length > 0) {
+    if (!isAuthenticated && !inPublicGroup && segments.length > 0) {
       router.replace("/login");
     }
 
     // User logged in while on login screen
-    if (isAuthenticated && inAuthGroup) {
+    if (isAuthenticated && segments?.[0] === "login") {
       router.replace("/(tabs)");
     }
   }, [isAuthenticated, isLoading, segments]);
@@ -91,6 +94,7 @@ function LayoutContent() {
           name="(tabs)"
           options={{ animation: "fade" }}
         />
+        
       </Stack>
     </>
   );

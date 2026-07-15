@@ -1,5 +1,5 @@
 import React from 'react';
-import LegalScreen from '../../../components/LegalScreen';
+import LegalScreen from '../../components/LegalScreen';
 
 // TODO: Replace bracketed placeholders and have this reviewed by legal counsel
 // before shipping — this app handles health-related personal data and includes

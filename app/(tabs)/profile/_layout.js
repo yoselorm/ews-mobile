@@ -19,14 +19,7 @@ export default function ProfileStack() {
         name="deleteAccount"
         options={{ title: "Delete Account", headerBackTitle: "Back" }}
       />
-      <Stack.Screen
-        name="privacyPolicy"
-        options={{ headerShown:false }}
-      />
-      <Stack.Screen
-        name="termsConditions"
-        options={{ headerShown:false }}
-      />
+     
     </Stack>
   );
 }

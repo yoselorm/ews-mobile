@@ -310,12 +310,12 @@ const handleLogout = async () => {
   <MenuItem
     title="Privacy Policy"
     icon={<Feather name="shield" size={18} color="#7C3AED" />}
-    onPress={() => router.push('/profile/privacyPolicy')}
+    onPress={() => router.push('/legal/privacyPolicy')}
   />
   <MenuItem
     title="Terms & Conditions"
     icon={<Feather name="file-text" size={18} color="#7C3AED" />}
-    onPress={() => router.push('/profile/termsConditions')}
+    onPress={() => router.push('/legal/termsConditions')}
   />
   <MenuItem
     title="Log Out"

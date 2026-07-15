@@ -56,7 +56,7 @@ export default function LoginScreen() {
             contentContainerStyle={{ flexGrow: 1 }}
           >
             {/* Back Button */}
-        
+
 
             <View className="items-center mt-12 mb-6">
               {/* Tilted Purple Icon Container */}
@@ -95,9 +95,9 @@ export default function LoginScreen() {
             {/* Use a spacer to push the button down instead of absolute positioning */}
             <View className="flex-1" />
 
-            {/* Continue Button - Removed 'absolute' and bottom constraints */}
+            {/* Continue Button */}
             <TouchableOpacity
-              className={`bg-purple-700 rounded-2xl py-4 items-center mb-12 ${loading ? "opacity-60" : ""}`}
+              className={`bg-purple-700 rounded-2xl py-4 items-center ${loading ? "opacity-60" : ""}`}
               onPress={handleContinue}
               disabled={loading}
             >
@@ -107,6 +107,25 @@ export default function LoginScreen() {
                 <Text className="text-white text-base font-semibold">Continue</Text>
               )}
             </TouchableOpacity>
+
+            {/* Consent text */}
+            <Text className="text-center text-xs text-gray-400 mt-4 mb-12 px-2 leading-5">
+              By continuing, you agree to our{" "}
+              <Text
+                className="text-purple-600 font-semibold"
+                onPress={() => router.push('/legal/termsConditions')}
+              >
+                Terms & Conditions
+              </Text>
+              {" "}and{" "}
+              <Text
+                className="text-purple-600 font-semibold"
+                onPress={() => router.push('/legal/privacyPolicy')}
+              >
+                Privacy Policy
+              </Text>
+              .
+            </Text>
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
