@@ -299,26 +299,37 @@ const handleLogout = async () => {
       <ProfileSection role={user?.role} profile={user?.profile} />
 
       {/* ── Settings ── */}
-      <View className="mx-6 bg-white rounded-3xl p-6 shadow-sm mb-8">
-        <Text className="text-base font-bold text-slate-900 mb-4">Account & Settings</Text>
-        <MenuItem
-          title="Edit Profile"
-          icon={<Feather name="user" size={18} color="#7C3AED" />}
-          onPress={() => router.push('/profile/personalInfo')}
-        />
-        <MenuItem
-          title="Log Out"
-          icon={<Feather name="log-out" size={18} color="#EF4444" />}
-          isDestructive
-          onPress={() => setLogoutVisible(true)}
-        />
-        <MenuItem
-          title="Delete Account"
-          icon={<MaterialCommunityIcons name="delete-outline" size={20} color="#EF4444" />}
-          isDestructive
-          onPress={() => router.push('/profile/deleteAccount')}
-        />
-      </View>
+     {/* ── Settings ── */}
+<View className="mx-6 bg-white rounded-3xl p-6 shadow-sm mb-8">
+  <Text className="text-base font-bold text-slate-900 mb-4">Account & Settings</Text>
+  <MenuItem
+    title="Edit Profile"
+    icon={<Feather name="user" size={18} color="#7C3AED" />}
+    onPress={() => router.push('/profile/personalInfo')}
+  />
+  <MenuItem
+    title="Privacy Policy"
+    icon={<Feather name="shield" size={18} color="#7C3AED" />}
+    onPress={() => router.push('/profile/privacyPolicy')}
+  />
+  <MenuItem
+    title="Terms & Conditions"
+    icon={<Feather name="file-text" size={18} color="#7C3AED" />}
+    onPress={() => router.push('/profile/termsConditions')}
+  />
+  <MenuItem
+    title="Log Out"
+    icon={<Feather name="log-out" size={18} color="#EF4444" />}
+    isDestructive
+    onPress={() => setLogoutVisible(true)}
+  />
+  <MenuItem
+    title="Delete Account"
+    icon={<MaterialCommunityIcons name="delete-outline" size={20} color="#EF4444" />}
+    isDestructive
+    onPress={() => router.push('/profile/deleteAccount')}
+  />
+</View>
 
       {/* ── Logout Modal ── */}
       <Modal visible={logoutVisible} transparent animationType="fade">
