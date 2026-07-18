@@ -281,9 +281,9 @@ export default function RegisterLactatingMother() {
       await dispatch(createLactatingMother(body)).unwrap();
       toast.success('Mother and baby enrolled successfully');
       router.back();
-    } catch (err) {
-      toast.error(err || 'Submission failed');
-    }
+    }  catch (err) {
+  toast.error(err?.response?.data?.message || err?.message || 'Submission failed');
+}
   };
 
   return (

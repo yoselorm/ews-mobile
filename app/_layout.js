@@ -7,6 +7,7 @@ import * as Notifications from "expo-notifications";
 import store from "../store";
 import { loadAuthData } from "../store/slices/authSlice";
 import { usePushToken } from "../services/usePushToken";
+import { ToastProvider } from "../components/Toast"; // 1. add this import
 
 // Keep splash visible until auth check completes
 SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -22,8 +23,6 @@ function AuthGate() {
     (state) => state.auth
   );
 
-  // Registers push token when authenticated. Removal on logout is
-  // handled inside the logout thunk (authSlice.js), not here.
   usePushToken({ enabled: isAuthenticated });
 
   useEffect(() => {
@@ -31,12 +30,10 @@ function AuthGate() {
 
     const inPublicGroup = PUBLIC_SEGMENTS.includes(segments?.[0]);
 
-    // User logged out while inside app
     if (!isAuthenticated && !inPublicGroup && segments.length > 0) {
       router.replace("/login");
     }
 
-    // User logged in while on login screen
     if (isAuthenticated && segments?.[0] === "login") {
       router.replace("/(tabs)");
     }
@@ -49,7 +46,6 @@ function LayoutContent() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
 
-  // Load auth state once
   useEffect(() => {
     dispatch(loadAuthData());
 
@@ -61,9 +57,6 @@ function LayoutContent() {
       }),
     });
 
-    // NOTE: currently routes every notification tap to /alerts.
-    // If more notification types are added later, branch on
-    // response.notification.request.content.data here.
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       setTimeout(() => {
         router.push("/(tabs)/alerts");
@@ -73,7 +66,6 @@ function LayoutContent() {
     return () => subscription.remove();
   }, [dispatch]);
 
-  // Hide splash when auth loading finishes
   useEffect(() => {
     if (!isLoading) {
       SplashScreen.hideAsync().catch(() => {});
@@ -94,8 +86,9 @@ function LayoutContent() {
           name="(tabs)"
           options={{ animation: "fade" }}
         />
-        
       </Stack>
+
+      <ToastProvider /> 
     </>
   );
 }

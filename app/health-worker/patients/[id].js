@@ -47,6 +47,28 @@ const PatientProfile = () => {
         }
     };
 
+    const calculateAge = (dobString) => {
+        if (!dobString) return "N/A";
+
+        const birthday = new Date(dobString);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthday.getFullYear();
+        const monthDifference = today.getMonth() - birthday.getMonth();
+
+        // Adjust if the birthday hasn't happened yet this year
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
+            age--;
+        }
+
+        return `${age}y`;
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return null;
+        return new Date(dateString).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    };
+
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-white">
@@ -54,23 +76,6 @@ const PatientProfile = () => {
             </View>
         );
     }
-
-    const calculateAge = (dobString) => {
-  if (!dobString) return "N/A";
-  
-  const birthday = new Date(dobString);
-  const today = new Date();
-  
-  let age = today.getFullYear() - birthday.getFullYear();
-  const monthDifference = today.getMonth() - birthday.getMonth();
-  
-  // Adjust if the birthday hasn't happened yet this year
-  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
-    age--;
-  }
-  
-  return `${age}y`;
-};
 
     const risk = getRiskStyles(patient?.risk_level);
 
@@ -149,6 +154,51 @@ const PatientProfile = () => {
                         <InfoRow icon="mail" label="Email" value={patient?.email} />
                         <InfoRow icon="calendar" label="Date of Birth" value={patient?.dob} />
                         <InfoRow icon="users" label="Gender" value={patient?.gender} last />
+                    </View>
+                </View>
+
+                {/* Role-Specific Details */}
+                <View className="px-6 mt-6">
+                    <View className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm shadow-slate-100">
+                        {patient?.role === 'pregnant_woman' ? (
+                            <>
+                                <Text className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-4">Pregnancy Details</Text>
+                                <InfoRow icon="clock" label="Gestational Age" value={patient?.profile?.gestational_age_weeks ? `${patient.profile.gestational_age_weeks} weeks` : null} />
+                                <InfoRow icon="calendar" label="Expected Delivery Date" value={formatDate(patient?.profile?.expected_delivery_date)} />
+                                <InfoRow icon="hash" label="Gravida" value={patient?.profile?.gravida} />
+                                <InfoRow icon="hash" label="Parity" value={patient?.profile?.parity} />
+                                <InfoRow icon="droplet" label="Blood Group" value={patient?.profile?.blood_group} />
+                                <InfoRow icon="home" label="ANC Facility" value={patient?.profile?.anc_facility} />
+                                <InfoRow icon="alert-triangle" label="Medical Conditions" value={patient?.profile?.medical_conditions} />
+                                <InfoRow 
+                                    icon="phone-call" 
+                                    label={`Emergency Contact${patient?.profile?.emergency_contact_name ? ` (${patient.profile.emergency_contact_name})` : ''}`}
+                                    value={patient?.profile?.emergency_contact_phone}
+                                    onPress={() => handleCall(patient?.profile?.emergency_contact_phone)}
+                                    isLink
+                                    last
+                                />
+                            </>
+                        ) : patient?.role === 'lactating_mother' ? (
+                            <>
+                                <Text className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-4">Baby & Delivery Details</Text>
+                                <InfoRow icon="user" label="Baby's Name" value={[patient?.profile?.baby_first_name, patient?.profile?.baby_last_name].filter(Boolean).join(' ')} />
+                                <InfoRow icon="calendar" label="Baby's Date of Birth" value={formatDate(patient?.profile?.baby_dob)} />
+                                <InfoRow icon="user" label="Baby's Gender" value={patient?.profile?.baby_gender} />
+                                <InfoRow icon="activity" label="Birth Weight" value={patient?.profile?.birth_weight_kg ? `${patient.profile.birth_weight_kg} kg` : null} />
+                                <InfoRow icon="heart" label="Mode of Delivery" value={patient?.profile?.mode_of_delivery} />
+                                <InfoRow icon="users" label="Number of Babies" value={patient?.profile?.number_of_babies} />
+                                <InfoRow icon="map-pin" label="Delivery Location" value={patient?.profile?.delivery_location} />
+                                <InfoRow 
+                                    icon="phone-call" 
+                                    label={`Emergency Contact${patient?.profile?.emergency_contact_name ? ` (${patient.profile.emergency_contact_name})` : ''}`}
+                                    value={patient?.profile?.emergency_contact_phone}
+                                    onPress={() => handleCall(patient?.profile?.emergency_contact_phone)}
+                                    isLink
+                                    last
+                                />
+                            </>
+                        ) : null}
                     </View>
                 </View>
 

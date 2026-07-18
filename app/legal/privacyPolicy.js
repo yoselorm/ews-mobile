@@ -7,7 +7,7 @@ const SECTIONS = [
   {
     heading: '1. Introduction',
     body: [
-      'This Privacy Policy explains how [Organization Name] ("we", "us", "our") collects, uses, and protects your information when you use the SafeMother+ mobile application ("the App"), part of the Early Warning System (EWS) for maternal and community health.',
+      'This Privacy Policy explains how HCD and AI Project ("we", "us", "our") collects, uses, and protects your information when you use the SafeMother+ mobile application ("the App"), part of the Early Warning System (EWS) for maternal and community health.',
       'Access to the App is provided by administrators through a health facility or community program. By using the App, you agree to the collection and use of information in accordance with this policy.',
     ],
   },
@@ -57,7 +57,7 @@ const SECTIONS = [
   {
     heading: '8. Your Rights',
     body: [
-      'Under the Ghana Data Protection Act, 2012 (Act 843), you have the right to access, correct, or request deletion of your personal information, and to object to certain processing. To exercise these rights, please contact [support email] or your registering health facility/administrator.',
+      'Under the Ghana Data Protection Act, 2012 (Act 843), you have the right to access, correct, or request deletion of your personal information, and to object to certain processing. To exercise these rights, please contact your registering health facility/administrator.',
     ],
   },
   {
@@ -75,7 +75,7 @@ const SECTIONS = [
   {
     heading: '11. Contact Us',
     body: [
-      'If you have questions about this Privacy Policy or how your information is handled, please contact [Organization Name] at [support email] or [phone/address].',
+      'If you have questions about this Privacy Policy or how your information is handled, please contact HCD and AI Project at mdzodzomenyo@ug.edu.gh or +233 208 376 845.',
     ],
   },
 ];

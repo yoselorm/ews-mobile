@@ -46,13 +46,13 @@ const SECTIONS = [
   {
     heading: '7. Intellectual Property',
     body: [
-      'All content, branding, and materials within the App are the property of [Organization Name] or its licensors, and may not be reproduced or distributed without prior written consent.',
+      'All content, branding, and materials within the App are the property of HCD and AI Project or its licensors, and may not be reproduced or distributed without prior written consent.',
     ],
   },
   {
     heading: '8. Limitation of Liability',
     body: [
-      'To the fullest extent permitted by law, [Organization Name] is not liable for any indirect, incidental, or consequential damages arising from your use of the App, including delayed, undelivered, or inaccurate alerts, except where such liability cannot be excluded under applicable law.',
+      'To the fullest extent permitted by law, HCD and AI Project is not liable for any indirect, incidental, or consequential damages arising from your use of the App, including delayed, undelivered, or inaccurate alerts, except where such liability cannot be excluded under applicable law.',
       'The App relies on third-party weather data and network/SMS providers; we do not guarantee uninterrupted or error-free delivery of alerts.',
     ],
   },
@@ -77,7 +77,7 @@ const SECTIONS = [
   {
     heading: '12. Contact Us',
     body: [
-      'Questions about these Terms can be directed to [Organization Name] at [support email] or [phone/address].',
+      'Questions about these Terms can be directed to HCD and AI Project at mdzodzomenyo@ug.edu.gh or +233 208 376 845.',
     ],
   },
 ];

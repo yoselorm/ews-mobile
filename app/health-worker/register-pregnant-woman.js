@@ -356,8 +356,8 @@ export default function RegisterPregnantWoman() {
 
   // ── Submit ─────────────────────────────────────────────────────────────────────
   const handleSave = async () => {
-    if (!formData.first_name || !formData.last_name || !formData.phone_number) {
-      toast.warning('First name, last name and phone number are required');
+    if (!formData.first_name || !formData.last_name || !formData.phone_number || !formData.community_id || !formData.dob || !formData.language_id) {
+      toast.warning('Kinldy fill al required fields marked with *');
       return;
     }
 
@@ -386,8 +386,8 @@ export default function RegisterPregnantWoman() {
       toast.success('Pregnant woman registered successfully');
       router.back();
     } catch (err) {
-      toast.error(err || 'Registration failed');
-    }
+  toast.error(err?.response?.data?.message || err?.message || 'Submission failed');
+}
   };
 
   return (
