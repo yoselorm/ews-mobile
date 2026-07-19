@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { api_url, api_url_v1 } from "./config";
+import { router } from "expo-router";
 
 const api = axios.create({
   baseURL: api_url_v1,
@@ -21,6 +22,8 @@ api.interceptors.response.use(
       // If the server says "Go away," clean up locally
       await SecureStore.deleteItemAsync("userToken");
       await SecureStore.deleteItemAsync("userData");
+    //  router.replace("/login");
+
       // Note: You can't easily dispatch to Redux here without a circular dependency,
       // but the next app reload or state check will see the missing token.
     }

@@ -47,23 +47,19 @@ const DateField = ({ label, value, onChange ,type = 'default' }) => {
   const [show, setShow] = useState(false);
   const date = value ? new Date(value) : new Date();
 
-const isDOB = type === 'dob' || label.toLowerCase().includes('birth');
+  const isDOB = type === 'dob' || label.toLowerCase().includes('birth');
   const isDelivery = type === 'delivery' || label.toLowerCase().includes('delivery');
 
   const minDate = isDOB ? new Date(1920, 0, 1) : (isDelivery ? new Date() : undefined);
   const maxDate = isDOB ? new Date() : undefined;
 
-  // 2. Initial picker position: 
-  // If it's a DOB and empty, start at 1995 so they don't scroll from 2026.
   const getInitialDate = () => {
     if (value) return new Date(value);
-    if (isDOB) return new Date(1995, 0, 1); 
+    if (isDOB) return new Date(1995, 0, 1);
     return new Date();
   };
 
   const [tempDate, setTempDate] = useState(getInitialDate());
-
-
 
   const handleChange = (event, selected) => {
     if (Platform.OS === 'android') setShow(false);
@@ -117,8 +113,8 @@ const isDOB = type === 'dob' || label.toLowerCase().includes('birth');
             display="default"
             onChange={handleChange}
             minimumDate={minDate}
-                maximumDate={maxDate}
-                textColor="black"
+            maximumDate={maxDate}
+            textColor="black"
           />
         )
       )}
@@ -187,7 +183,6 @@ const DropdownField = ({ label, placeholder, value, valueKey = 'id', labelKey = 
                   return (
                     <TouchableOpacity
                       onPress={() => { setShow(false); setSearch(''); }}
-                      // Note: we return the id via onSelect below
                       className={`py-3.5 px-4 rounded-2xl mb-1 flex-row justify-between items-center ${isSelected ? 'bg-purple-50 border border-purple-100' : 'border border-transparent'}`}
                     >
                       <Text className={`font-medium ${isSelected ? 'text-purple-700' : 'text-slate-700'}`}>
@@ -304,6 +299,7 @@ export default function RegisterPregnantWoman() {
 
   const [photo, setPhoto] = useState(null);
   const [showBloodGroupPicker, setShowBloodGroupPicker] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const [formData, setFormData] = useState({
     first_name:              '',
@@ -356,8 +352,13 @@ export default function RegisterPregnantWoman() {
 
   // ── Submit ─────────────────────────────────────────────────────────────────────
   const handleSave = async () => {
+    setSubmitError(null); // clear previous error on new attempt
+
     if (!formData.first_name || !formData.last_name || !formData.phone_number || !formData.community_id || !formData.dob || !formData.language_id) {
-      toast.warning('Kinldy fill al required fields marked with *');
+      toast.warning('Kindly fill all required fields marked with *');
+
+      const message = 'Please fill all required fields: First Name, Last Name, Phone Number, Date of Birth, Language, and Community.';
+      setSubmitError(message);
       return;
     }
 
@@ -386,8 +387,9 @@ export default function RegisterPregnantWoman() {
       toast.success('Pregnant woman registered successfully');
       router.back();
     } catch (err) {
-  toast.error(err?.response?.data?.message || err?.message || 'Submission failed');
-}
+      const message = err?.response?.data?.message || err?.message || 'Submission failed';
+      setSubmitError(typeof message === 'string' ? message : 'Submission failed');
+    }
   };
 
   return (
@@ -441,7 +443,7 @@ export default function RegisterPregnantWoman() {
 
         {/* Language Dropdown */}
         <SelectDropdown
-          label="Language"
+          label="Language *"
           placeholder="Select language"
           value={formData.language_id}
           onSelect={set('language_id')}
@@ -578,6 +580,14 @@ export default function RegisterPregnantWoman() {
               <Ionicons name="image-outline" size={28} color="#94a3b8" />
               <Text className="text-slate-400 font-bold text-xs mt-2 text-center">From Gallery</Text>
             </TouchableOpacity>
+          </View>
+        )}
+
+        {/* ── Error Badge ── */}
+        {submitError && (
+          <View className="flex-row items-start bg-red-50 border border-red-100 rounded-2xl p-4 mb-4">
+            <Feather name="alert-circle" size={18} color="#ef4444" style={{ marginTop: 1 }} />
+            <Text className="flex-1 text-red-600 font-medium text-sm ml-3">{submitError}</Text>
           </View>
         )}
 

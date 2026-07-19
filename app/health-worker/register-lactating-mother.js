@@ -207,6 +207,7 @@ export default function RegisterLactatingMother() {
   const { communities, languages, loading: communityLoading } = useSelector((s) => s.communities);
 
   const [photo, setPhoto] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
   const [formData, setFormData] = useState({
     first_name:              '',
@@ -260,9 +261,11 @@ export default function RegisterLactatingMother() {
 
   // ── Submit ─────────────────────────────────────────────────────────────────────
   const handleSave = async () => {
+    setSubmitError(null); // clear previous error on new attempt
+
     const required = ['first_name', 'last_name', 'dob', 'phone_number', 'baby_first_name', 'baby_last_name', 'baby_dob'];
     const missing  = required.filter((k) => !formData[k]);
-    if (missing.length > 0) { toast.warning('Please complete all required fields (*)'); return; }
+    if (missing.length > 0) { setSubmitError('Please complete all required fields (*)'); return; }
 
     const body = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
@@ -281,9 +284,10 @@ export default function RegisterLactatingMother() {
       await dispatch(createLactatingMother(body)).unwrap();
       toast.success('Mother and baby enrolled successfully');
       router.back();
-    }  catch (err) {
-  toast.error(err?.response?.data?.message || err?.message || 'Submission failed');
-}
+    } catch (err) {
+      const message = err?.response?.data?.message || err?.message || 'Submission failed';
+      setSubmitError(typeof message === 'string' ? message : 'Submission failed');
+    }
   };
 
   return (
@@ -437,6 +441,14 @@ export default function RegisterLactatingMother() {
                 <Text className="text-slate-500 font-bold text-xs">From Gallery</Text>
                 <Text className="text-slate-400 text-[10px] mt-0.5">Library</Text>
               </TouchableOpacity>
+            </View>
+          )}
+
+          {/* ── Error Badge ── */}
+          {submitError && (
+            <View className="flex-row items-start bg-red-50 border border-red-100 rounded-2xl p-4 mb-4">
+              <Feather name="alert-circle" size={18} color="#ef4444" style={{ marginTop: 1 }} />
+              <Text className="flex-1 text-red-600 font-medium text-sm ml-3">{submitError}</Text>
             </View>
           )}
 
