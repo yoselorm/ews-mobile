@@ -86,7 +86,7 @@ export default function TermsConditions() {
   return (
     <LegalScreen
       title="Terms & Conditions"
-      lastUpdated="[Month Day, Year]"
+      lastUpdated="July, 2026"
       sections={SECTIONS}
     />
   );

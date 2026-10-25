@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
   return (
     <LegalScreen
       title="Privacy Policy"
-      lastUpdated="[Month Day, Year]"
+      lastUpdated="July, 2026"
       sections={SECTIONS}
     />
   );
