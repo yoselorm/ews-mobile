@@ -45,7 +45,8 @@
         "android.permission.VIBRATE",
         "android.permission.POST_NOTIFICATIONS"
       ],
-      "package": "com.yoselorm.earlywarningsys"
+      "package": "com.yoselorm.earlywarningsys",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png"
