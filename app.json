@@ -43,8 +43,7 @@
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.VIBRATE",
-        "android.permission.POST_NOTIFICATIONS",
-        "NOTIFICATIONS"
+        "android.permission.POST_NOTIFICATIONS"
       ],
       "package": "com.yoselorm.earlywarningsys"
     },
@@ -86,7 +85,9 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/f7711ce0-eb27-4838-9776-d8e81e743c3b"
+      "url": "https://u.expo.dev/f7711ce0-eb27-4838-9776-d8e81e743c3b",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 5000
     }
   }
 }
