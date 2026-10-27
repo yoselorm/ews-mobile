@@ -5,7 +5,8 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 
 import store from "../store";
-import { loadAuthData } from "../store/slices/authSlice";
+import { loadAuthData, sessionExpired } from "../store/slices/authSlice";
+import { setUnauthorizedHandler } from "../services/api";
 import { usePushToken } from "../services/usePushToken";
 import { ToastProvider } from "../components/Toast";
 
@@ -22,6 +23,9 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 });
+
+// Send the user back to login whenever the API rejects their token
+setUnauthorizedHandler(() => store.dispatch(sessionExpired()));
 
 // Routes accessible without authentication
 const PUBLIC_SEGMENTS = ["login", "legal"];

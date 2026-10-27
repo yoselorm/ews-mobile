@@ -69,6 +69,12 @@ const authSlice = createSlice({
   reducers: {
     setError: (state, action) => { state.error = action.payload; },
     clearError: (state) => { state.error = null; },
+    // Server rejected the token; AuthGate redirects to login once this clears
+    sessionExpired: (state) => {
+      state.token = null;
+      state.user = null;
+      state.isAuthenticated = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -119,5 +125,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setError, clearError } = authSlice.actions;
+export const { setError, clearError, sessionExpired } = authSlice.actions;
 export default authSlice.reducer;
